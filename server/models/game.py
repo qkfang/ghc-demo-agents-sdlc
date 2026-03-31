@@ -20,18 +20,22 @@ class Game(BaseModel):
     
     @validates('title')
     def validate_name(self, key, name):
+        """Validate that the game title meets the minimum length requirement."""
         return self.validate_string_length('Game title', name, min_length=2)
     
     @validates('description')
     def validate_description(self, key, description):
+        """Validate that the game description meets the minimum length requirement."""
         if description is not None:
             return self.validate_string_length('Description', description, min_length=10, allow_none=True)
         return description
     
     def __repr__(self):
+        """Return a string representation of the Game instance."""
         return f'<Game {self.title}, ID: {self.id}>'
 
     def to_dict(self):
+        """Return a dictionary representation of the Game instance."""
         return {
             'id': self.id,
             'title': self.title,
