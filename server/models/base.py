@@ -1,11 +1,13 @@
 # filepath: server/models/base.py
+from typing import Any, Optional
 from . import db
 
 class BaseModel(db.Model):
     __abstract__ = True
     
     @staticmethod
-    def validate_string_length(field_name, value, min_length=2, allow_none=False):
+    def validate_string_length(field_name: str, value: Any, min_length: int = 2, allow_none: bool = False) -> Optional[str]:
+        """Validate that a string value meets minimum length requirements."""
         if value is None:
             if allow_none:
                 return value
