@@ -6,6 +6,7 @@ from models import Game, Publisher, Category, db, init_db
 from routes.games import games_bp
 
 class TestGamesRoutes(unittest.TestCase):
+    """Integration tests for the games routes blueprint."""
     # Test data as complete objects
     TEST_DATA: Dict[str, Any] = {
         "publishers": [

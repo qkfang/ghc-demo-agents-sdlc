@@ -1,8 +1,11 @@
+from typing import Any, Optional
 from . import db
 from .base import BaseModel
 from sqlalchemy.orm import validates, relationship
 
 class Game(BaseModel):
+    """Game model representing a crowdfunded title."""
+
     __tablename__ = 'games'
     
     id = db.Column(db.Integer, primary_key=True)
@@ -19,19 +22,23 @@ class Game(BaseModel):
     publisher = relationship("Publisher", back_populates="games")
     
     @validates('title')
-    def validate_name(self, key, name):
+    def validate_name(self, key: str, name: str) -> str:
+        """Validate that the game title meets minimum length requirements."""
         return self.validate_string_length('Game title', name, min_length=2)
     
     @validates('description')
-    def validate_description(self, key, description):
+    def validate_description(self, key: str, description: Optional[str]) -> Optional[str]:
+        """Validate that the description is present and sufficiently detailed."""
         if description is not None:
             return self.validate_string_length('Description', description, min_length=10, allow_none=True)
         return description
     
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """Provide a readable representation for debugging and logs."""
         return f'<Game {self.title}, ID: {self.id}>'
 
-    def to_dict(self):
+    def to_dict(self) -> dict[str, Any]:
+        """Serialize the game and its relationships for API responses."""
         return {
             'id': self.id,
             'title': self.title,
