@@ -53,6 +53,9 @@
     });
 
     // Function to render stars based on rating
+    /**
+     * Render a textual star rating for display, including half stars when needed.
+     */
     function renderStarRating(rating: number | null): string {
         if (rating === null) return "Not yet rated";
         

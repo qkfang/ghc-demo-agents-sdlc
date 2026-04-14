@@ -1,3 +1,4 @@
+from typing import Any, Dict, Optional
 from . import db
 from .base import BaseModel
 from sqlalchemy.orm import validates, relationship
@@ -19,19 +20,23 @@ class Game(BaseModel):
     publisher = relationship("Publisher", back_populates="games")
     
     @validates('title')
-    def validate_name(self, key, name):
+    def validate_name(self, key: str, name: str) -> str:
+        """Validate the game title length."""
         return self.validate_string_length('Game title', name, min_length=2)
     
     @validates('description')
-    def validate_description(self, key, description):
+    def validate_description(self, key: str, description: Optional[str]) -> Optional[str]:
+        """Validate the game description length when provided."""
         if description is not None:
             return self.validate_string_length('Description', description, min_length=10, allow_none=True)
         return description
     
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """Return a readable representation of the game."""
         return f'<Game {self.title}, ID: {self.id}>'
 
-    def to_dict(self):
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert the game instance into a serializable dictionary."""
         return {
             'id': self.id,
             'title': self.title,
